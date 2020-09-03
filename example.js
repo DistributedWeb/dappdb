@@ -1,6 +1,6 @@
-var hyperdb = require('./')
+var dappdb = require('./')
 
-var db = hyperdb('./my.db', {
+var db = dappdb('./my.db', {
   valueEncoding: 'utf-8',
   reduce: (a, b) => a
 })

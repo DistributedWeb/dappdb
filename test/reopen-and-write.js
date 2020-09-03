@@ -1,7 +1,7 @@
 var tape = require('tape')
 var create = require('./helpers/create')
 var run = require('./helpers/run')
-var hyperdb = require('..')
+var dappdb = require('..')
 var messages = require('../lib/messages')
 
 tape('3 writers, re-open and write, re-open again', function (t) {
@@ -29,7 +29,7 @@ tape('3 writers, re-open and write, re-open again', function (t) {
     }
 
     function reopenDb (cb) {
-      reopened = hyperdb(reuseStorage(a))
+      reopened = dappdb(reuseStorage(a))
       reopened.ready(function (err) {
         t.error(err, 'no error')
         cb()

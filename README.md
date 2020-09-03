@@ -1,19 +1,19 @@
-# hyperdb
+# dappdb
 
 Distributed scalable database.
 
 ```
-npm install hyperdb
+npm install dappdb
 ```
 
-Read [ARCHITECTURE.md](ARCHITECTURE.md) for details on how hyperdb works.
+Read [ARCHITECTURE.md](ARCHITECTURE.md) for details on how dappdb works.
 
 ## Usage
 
 ``` js
-var hyperdb = require('hyperdb')
+var dappdb = require('dappdb')
 
-var db = hyperdb('./my.db', {valueEncoding: 'utf-8'})
+var db = dappdb('./my.db', {valueEncoding: 'utf-8'})
 
 db.put('/hello', 'world', function (err) {
   if (err) throw err
@@ -26,23 +26,23 @@ db.put('/hello', 'world', function (err) {
 
 ## API
 
-#### `var db = hyperdb(storage, [key], [options])`
+#### `var db = dappdb(storage, [key], [options])`
 
-Create a new hyperdb.
+Create a new dappdb.
 
 `storage` can be a string or a function. If a string like the above example, the
-[random-access-file](https://github.com/mafintosh/random-access-file) storage
+[random-access-file](https://github.com/distributedweb/random-access-file) storage
 module is used; the resulting folder with the data will be whatever `storage` is
 set to.
 
-If `storage` is a function, it will be called with every filename hyperdb needs
+If `storage` is a function, it will be called with every filename dappdb needs
 to operate on. There are many providers for the
 [abstract-random-access](https://github.com/juliangruber/abstract-random-access)
 interface. e.g.
 
 ```js
 var ram = require('random-access-memory')
-var feed = hyperdb(function (filename) {
+var feed = dappdb(function (filename) {
   // filename will be one of: data, bitfield, tree, signatures, key, secret_key
   // the data file will contain all your data concattenated.
 
@@ -68,14 +68,14 @@ Options include:
 
 #### `db.key`
 
-Buffer containing the public key identifying this hyperdb.
+Buffer containing the public key identifying this dappdb.
 
 Populated after `ready` has been emitted. May be `null` before the event.
 
 #### `db.discoveryKey`
 
 Buffer containing a key derived from the db.key.
-In contrast to `db.key` this key does not allow you to verify the data but can be used to announce or look for peers that are sharing the same hyperdb, without leaking the hyperdb key.
+In contrast to `db.key` this key does not allow you to verify the data but can be used to announce or look for peers that are sharing the same dappdb, without leaking the dappdb key.
 
 Populated after `ready` has been emitted. May be `null` before the event.
 
@@ -123,12 +123,12 @@ Insert a batch of values efficiently, in a single atomic transaction. A batch sh
 
 #### `db.local`
 
-Your local writable feed. You have to get an owner of the hyperdb to authorize you to have your
-writes replicate. The first person to create the hyperdb is the first owner.
+Your local writable feed. You have to get an owner of the dappdb to authorize you to have your
+writes replicate. The first person to create the dappdb is the first owner.
 
 #### `db.authorize(key, [callback])`
 
-Authorize another peer to write to the hyperdb.
+Authorize another peer to write to the dappdb.
 
 To get another peer to authorize you you'd usually do something like
 

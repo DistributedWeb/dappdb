@@ -1,5 +1,5 @@
-var hypercore = require('hypercore')
-var protocol = require('hypercore-protocol')
+var ddatabase = require('ddatabase')
+var protocol = require('ddatabase-protocol')
 var thunky = require('thunky')
 var remove = require('unordered-array-remove')
 var toStream = require('nanoiterator/to-stream')
@@ -43,7 +43,7 @@ function HyperDB (storage, key, opts) {
   var checkout = opts.checkout
 
   this.key = typeof key === 'string' ? Buffer.from(key, 'hex') : key
-  this.discoveryKey = this.key ? hypercore.discoveryKey(this.key) : null
+  this.discoveryKey = this.key ? ddatabase.discoveryKey(this.key) : null
   this.source = checkout ? checkout.source : null
   this.local = checkout ? checkout.local : null
   this.localContent = checkout ? checkout.localContent : null
@@ -408,7 +408,7 @@ HyperDB.prototype._writer = function (dir, key, opts) {
   })
 
   var self = this
-  var feed = hypercore(storage, key, opts)
+  var feed = ddatabase(storage, key, opts)
 
   writer = new Writer(self, feed)
   feed.on('append', onappend)
@@ -473,7 +473,7 @@ HyperDB.prototype._getWriter = function (key) {
 
 HyperDB.prototype._addWriter = function (key, cb) {
   var self = this
-  var writer = this._writer('peers/' + hypercore.discoveryKey(key).toString('hex'), key)
+  var writer = this._writer('peers/' + ddatabase.discoveryKey(key).toString('hex'), key)
 
   writer._feed.ready(function (err) {
     if (err) return cb(err)
@@ -711,7 +711,7 @@ Writer.prototype.ensureHeader = function (cb) {
   if (this._feed.length) return cb(null)
 
   var header = {
-    protocol: 'hyperdb'
+    protocol: 'dappdb'
   }
 
   this._feed.append(messages.Header.encode(header), cb)
@@ -912,7 +912,7 @@ Writer.prototype._ensureContentFeed = function (key) {
     key = pair.publicKey
   }
 
-  this._contentFeed = hypercore(storage, key, {
+  this._contentFeed = ddatabase(storage, key, {
     sparse: this._db.sparseContent,
     storeSecretKey: false,
     secretKey

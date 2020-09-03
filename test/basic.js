@@ -449,7 +449,7 @@ tape('createWriteStream pipe', function (t) {
 })
 
 tape('create with precreated keypair', function (t) {
-  var crypto = require('hypercore/lib/crypto')
+  var crypto = require('ddatabase/lib/crypto')
   var keyPair = crypto.keyPair()
 
   var db = create.one(keyPair.publicKey, {secretKey: keyPair.secretKey})

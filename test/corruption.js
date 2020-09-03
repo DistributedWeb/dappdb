@@ -1,7 +1,7 @@
 var tape = require('tape')
 var create = require('./helpers/create')
 var run = require('./helpers/run')
-var hyperdb = require('..')
+var dappdb = require('..')
 var messages = require('../lib/messages')
 
 tape('feed with corrupted inflate generates error', function (t) {
@@ -43,7 +43,7 @@ tape('feed with corrupted inflate generates error', function (t) {
     }
 
     function openCorruptedDb (cb) {
-      corrupted = hyperdb(reuseStorage(a))
+      corrupted = dappdb(reuseStorage(a))
       corrupted.ready(function (err) {
         t.ok(err, 'expected error')
         t.equal(err.message, 'Missing feed mappings', 'error message')

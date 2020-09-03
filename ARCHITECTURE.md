@@ -13,7 +13,7 @@ for changes on `/foo/bar` will report both changes to `/foo/bar/baz` and also
 ## Set of append-only logs (feeds)
 
 A HyperDB is fundamentally a set of
-[hypercore](https://github.com/mafintosh/hypercore)s. A *hypercore* is a secure
+[ddatabase](https://github.com/distributedweb/ddatabase)s. A *ddatabase* is a secure
 append-only log that is identified by a public key, and can only be written to
 by the holder of the corresponding private key. Because it is append-only, old
 values cannot be deleted nor modified. Because it is secure, a feed can be
@@ -21,10 +21,10 @@ downloaded from even untrustworthy peers and verified to be accurate. Any
 modifications (malicious or otherwise) to the original feed data by someone
 other than the author can be readily detected.
 
-Each entry in a hypercore has a *sequence number*, that increments by 1 with
+Each entry in a ddatabase has a *sequence number*, that increments by 1 with
 each write, starting at 0 (`seq=0`).
 
-HyperDB builds its hierarchical key-value store on top of these hypercore feeds,
+HyperDB builds its hierarchical key-value store on top of these ddatabase feeds,
 and also provides facilities for authorization, and replication of those member
 hypercores.
 
@@ -133,8 +133,8 @@ Now there is only one "head": Alice's feed at seq 3.
 ## Authorization
 
 The set of hypercores are *authorized* in that the original author of the first
-hypercore in a hyperdb must explicitly denote in their append-only log that the
-public key of a new hypercore is permitted to edit the database. Any authorized
+ddatabase in a dappdb must explicitly denote in their append-only log that the
+public key of a new ddatabase is permitted to edit the database. Any authorized
 member may authorize more members. There is no revocation or other author
 management elements currently.
 
@@ -149,9 +149,9 @@ Each node stores the following basic information:
 
 - `key`: the key that is being created or modified. e.g. `/home/sww/dev.md`
 - `value`: the value stored at that key.
-- `seq`: the sequence number of this entry in the owner's hypercore. 0 is the
+- `seq`: the sequence number of this entry in the owner's ddatabase. 0 is the
   first, 1 the second, and so forth.
-- `feed`: the ID of the hypercore writer that wrote this
+- `feed`: the ID of the ddatabase writer that wrote this
 - `path`: a 2-bit hash sequence of the key's components
 - `trie`: a navigation structure used with `path` to find a desired key
 - `clock`: vector clock to determine node insertion causality
@@ -223,7 +223,7 @@ first 64 2-bit characters match. This is because `/a/b` is a prefix of `/a/b/c`.
 
 Since this is the first entry, `seq` is 0. Since this is the only known feed,
 `feed` is also 0. `feeds` is an array of entries of the form `{ key: Buffer,
-seq: Number }` that let you map the numeric value `feed` to a hypercore key and
+seq: Number }` that let you map the numeric value `feed` to a ddatabase key and
 its sequence number head. `feeds` isn't always set: it only gets included when
 it changes compared to `node.seq - 1`, in the interest of storing less data per
 node.
@@ -257,7 +257,7 @@ Notice though that `trie` is set. It's a long but sparse array. It has 35
 entries, with the last one referencing the first node inserted (`a/b/`). Why?
 
 (If it wasn't stored as a sparse array, you'd actually see 64 entries (the
-length of the `path`). But since the other 29 entries are also empty, hyperdb
+length of the `path`). But since the other 29 entries are also empty, dappdb
 doesn't bother allocating them.)
 
 If you visually compare this node's `path` with the previous node's `path`, how

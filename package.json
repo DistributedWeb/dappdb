@@ -1,7 +1,7 @@
 {
   "name": "dappdb",
   "version": "1.0.0",
-  "description": "Distributed scalable database",
+  "description": "Distributed multi-writer key-value store.",
   "main": "index.js",
   "dependencies": {
     "array-lru": "^1.1.1",
@@ -39,7 +39,7 @@
     "type": "git",
     "url": "https://github.com/distributedweb/dappdb.git"
   },
-  "author": "Mathias Buus (@mafintosh)",
+  "author": "Peeps Labs <peepslabs@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/distributedweb/dappdb/issues"
